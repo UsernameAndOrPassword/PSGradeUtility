@@ -12,9 +12,10 @@ func MainInteractive() error {
 	var err error
 	var username, ticket, studentID string
 
-	fmt.Print("hello! to see a list of commands, you can use \033[1mh\033[0m.\n\n> ")
+	fmt.Println("hello! to see a list of commands, you can use \033[1mh\033[0m.")
 
 	for {
+		fmt.Print("\n> ")
 		fmt.Scanln(&input)
 		input = strings.ToLower(strings.TrimSpace(input))
 
@@ -24,25 +25,30 @@ func MainInteractive() error {
 		case "q", "quit":
 			return nil
 		case "s":
-			username, ticket, studentID, err = signIn()
+			u, t, s, err := signIn()
 			if err != nil {
 				fmt.Println(err)
 				break
 			}
+			username, ticket, studentID = u, t, s
 			fmt.Println("\nsigned in as", username)
 		case "u":
 			if username == "" {
 				fmt.Println("you arent signed in")
-			} else {
-				fmt.Println("currently signed in as", username)
+				break
 			}
+			fmt.Println("currently signed in as", username)
 		case "a":
 			if err = showAllGrades(ticket, studentID); err != nil {
 				fmt.Println(err)
 			}
+		case "c":
+			if err = gradeCalculator(ticket, studentID); err != nil {
+				fmt.Println(err)
+			}
+		default:
+			fmt.Println("unrecognized input")
 		}
-
-		fmt.Print("\n> ")
 	}
 }
 

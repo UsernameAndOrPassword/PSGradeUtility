@@ -43,8 +43,10 @@ type Category struct {
 }
 
 type Score struct {
-	AssignmentID int     `json:"assignmentId"`
-	Percent      float64 `json:"percent"`
+	Collected    bool `json:"collected"`
+	Exempt       bool `json:"exempt"`
+	AssignmentID int  `json:"assignmentId"`
+	Percent      any  `json:"percent"`
 }
 
 type DataResponse struct {
@@ -58,7 +60,7 @@ type DataResponse struct {
 type FullResponse struct {
 	Response struct {
 		Return struct {
-			Data DataResponse `json:"studentDataVOs"`
+			Data *DataResponse `json:"studentDataVOs"`
 		} `json:"return"`
 	} `json:"getStudentDataResponse"`
 }

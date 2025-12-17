@@ -17,8 +17,8 @@ import (
 var httpClient = &http.Client{Timeout: 5 * time.Second}
 
 var (
-	ErrNoTicket   = errors.New("serviceTicket not found in response body")
-	ErrNotStudent = errors.New("sign in using your own account, please (not your parent's!)")
+	ErrNoTicket   = errors.New("serviceTicket not found in response body\nare you sure your password is correct?")
+	ErrNotStudent = errors.New("parent accounts are unsupported, please sign in using your own account")
 )
 
 func GetServiceTicket(username, password string) (string, string, error) {
@@ -93,15 +93,6 @@ func GetFullData(ticket, studentID string) (io.ReadCloser, error) {
 	if err != nil {
 		return nil, fmt.Errorf("making authorized request: %w", err)
 	}
-
-	// if resp.StatusCode == http.StatusUnauthorized {
-	// 	fmt.Print("\033[1m! service ticket is invalid, regenerating and retrying\033[0m\n\n")
-	// 	ticket, studentID, err = GetServiceTicket()
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
-	// 	return GetFullData(ticket, studentID)
-	// }
 
 	return resp.Body, nil
 }
